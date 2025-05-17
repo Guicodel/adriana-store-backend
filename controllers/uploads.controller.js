@@ -30,6 +30,50 @@ const uploadImgProduct = async(req, res = response ) => {
         });
     }  
 }
+const getImageProductById = async(req, res = response) =>{
+    const { colection, id} = req.params;
+    try {
+        let modelColection = colection;
+        switch( modelColection)
+        {
+            case 'users':
+                modelColection = await User.findById(id);
+                if(!modelColection){
+                    return res.status(400).json({
+                        msg:`No existe un usuario con el id ${id}`
+                    });
+                }
+                break;
+            case 'products':
+                modelColection = await Product.findById(id);
+                if(!modelColection){
+                    return res.status(400).json({
+                        msg:`No existe un producto con el id ${id}`
+                    });
+                }
+                break; 
+            default:
+                return res.status(500).json(({
+                    msg: 'ERROR no se valido esta operación'
+                }));
+        }
+        if(modelColection.img.length>0){
+            const pathImage = path.join(__dirname,'../img-uploads',modelColection.img[0]);
+            if(fs.existsSync(pathImage)){
+                return res.sendFile(pathImage);
+            }
+        }
+        return res.json({
+            msj:'No Existen Imagen del Elemento'
+        })
+
+    } catch (error) {
+        console.log('ERROR no se pudo completar esta operación');
+        throw (error);
+    }
+
+
+}
 const updateImage = async( req, res = response)=>{
     if (!req.files || Object.keys(req.files).length === 0 || !req.files.imgFiles) {
         res.status(400).json({
@@ -88,5 +132,6 @@ const updateImage = async( req, res = response)=>{
 
 module.exports = {
     uploadImgProduct,
-    updateImage
+    updateImage,
+    getImageProductById
 }
