@@ -71,9 +71,9 @@ const getCategoryById = async(req, res = response)=>{
     const {id} = req.params;
     try {
         const category = await Category.findById(id);
-        res.status(200).json({
+        res.status(200).json(
             category
-        })
+        )
     } catch (error) {
         console.log('no se pudo obtener de la BD');
         throw(error);
@@ -85,9 +85,9 @@ const deleteCategory = async(req,res=response)=>{
     const {id} = req.params;
     try {
         const categoryToDelete = await Category.findByIdAndUpdate(id,{state:false},{new:true});
-        res.status(200).json({
+        res.status(200).json(
             categoryToDelete
-        }) 
+        ) 
     } catch (error) 
     {
         console.log('no se pudo borrar en la BD');

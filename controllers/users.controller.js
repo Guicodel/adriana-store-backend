@@ -44,9 +44,9 @@ const usersPost = async(req = request, res = response ) =>{
     user.password = bcrypt.hashSync(password,salt);
 
     await user.save();
-    res.json({
+    res.json(
         user
-    });
+    );
 }
 const usersPut = async(req, res = response ) =>{
     const { id } = req.params;
@@ -60,10 +60,10 @@ const usersPut = async(req, res = response ) =>{
 
     const userUpdate = await User.findByIdAndUpdate(id,restData,{new:true});
 
-    res.json({
+    res.json(
         
         userUpdate
-    });
+    );
 }
 const usersDelete = async(req, res = response ) =>{
 
@@ -76,9 +76,9 @@ const usersDelete = async(req, res = response ) =>{
     
     const user = await User.findByIdAndUpdate(id,{state:false},{new:true});
     //
-    res.json({
+    res.json(
         user
-    });
+    );
 }
 const userPatch = (req, res = response ) =>{
     res.json({

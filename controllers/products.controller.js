@@ -53,9 +53,8 @@ const getProductById = async(req, res = response) => {
     try {
         const product = await Product.findById(id)
             .populate('categoryId','name');
-        res.status(200).json({
-            product
-        })
+        res.status(200).json(
+            product)
     } catch (error) {
         console.log(`No se pudo obtener el producto con el id ${id} de la BD`);
         throw (error);
@@ -92,9 +91,9 @@ const deleteProduct = async(req, res = response) => {
     const {id} = req.params;
         try {
             const productToDelete = await Product.findByIdAndUpdate(id,{state:false},{new:true});
-            res.status(200).json({
+            res.status(200).json(
                 productToDelete
-            }) 
+            ) 
         } catch (error) 
         {
             console.log('el producto no se pudo borrar en la BD');

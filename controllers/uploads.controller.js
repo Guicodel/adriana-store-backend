@@ -71,6 +71,49 @@ const getImageProductById = async(req, res = response) =>{
         console.log('ERROR no se pudo completar esta operación');
         throw (error);
     }
+}
+const getImageByImageName = async(req, res = response) =>{
+    const { imageName, id, colection} = req.params;
+    try {
+        let modelColection = colection;
+        switch( modelColection)
+        {
+            case 'users':
+                modelColection = await User.findById(id);
+                if(!modelColection){
+                    return res.status(400).json({
+                        msg:`No existe un usuario con el id ${id}`
+                    });
+                }
+                break;
+            case 'products':
+                modelColection = await Product.findById(id);
+                if(!modelColection){
+                    return res.status(400).json({
+                        msg:`No existe un producto con el id ${id}`
+                    });
+                }
+                break; 
+            default:
+                return res.status(500).json(({
+                    msg: 'ERROR no se valido esta operación'
+                }));
+        }
+        const indexImage = modelColection.img.indexOf(imageName);
+        if(indexImage !== -1 ){
+            const pathImage = path.join(__dirname,'../img-uploads',modelColection.img[indexImage]);
+            if(fs.existsSync(pathImage)){
+                return res.sendFile(pathImage);
+            }
+        }
+        return res.json({
+            msj:'No Existen Imagen del Elemento'
+        })
+
+    } catch (error) {
+        console.log('ERROR no se pudo completar esta operación');
+        throw (error);
+    }
 
 
 }
@@ -133,5 +176,6 @@ const updateImage = async( req, res = response)=>{
 module.exports = {
     uploadImgProduct,
     updateImage,
-    getImageProductById
+    getImageProductById,
+    getImageByImageName
 }
