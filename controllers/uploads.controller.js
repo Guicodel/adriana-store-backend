@@ -9,6 +9,7 @@ const fs = require('fs');
 
 const { response } = require('express');
 
+//esta funcion solo sube una imagen pero no lo vincula a ningun produto o usuario
 const uploadImgProduct = async(req, res = response ) => {
 
     if (!req.files || Object.keys(req.files).length === 0 || !req.files.imgFiles) {

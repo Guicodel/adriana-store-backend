@@ -30,7 +30,9 @@ const createCategory = async(req, res = response) =>{
         })
     }
     try {
-        const category = new Category({name});
+        req.body.name= name;
+        const newCategory = req.body;
+        const category = new Category(newCategory);
         await category.save();
         res.status(201).json(category);
         
@@ -41,7 +43,8 @@ const createCategory = async(req, res = response) =>{
 }
 const updateCategory = async(req,res = response)=>{
     const {id} = req.params;
-    try {
+    if(req.body.name)
+    {
         const name = req.body.name.toUpperCase();
         const categoryDB = await Category.findOne({name});
         if( categoryDB ){
@@ -49,10 +52,15 @@ const updateCategory = async(req,res = response)=>{
                 msg:`la categoria ${categoryDB.name} ya existe en la base da datos`
             });
         }
-        const categoryUpdated = await Category.findByIdAndUpdate(id,{name},{new:true});
-        res.status(200).json({
-            categoryUpdated
-        });
+        else{
+            req.body.name=name;
+        }
+    }
+    try {
+        const data = req.body;
+        const categoryUpdated = await Category.findByIdAndUpdate(id,data,{new:true});
+        res.status(200).json(
+            categoryUpdated);
         
     } catch (error) {
         console.log('Error al actualizar en la BD');

@@ -4,7 +4,6 @@ const { Product } = require('../models/index');
 const createProduct = async(req, res = response) => {
     const name = req.body.name.toUpperCase();
     const productBD = await Product.findOne({name});
-    console.log(productBD);
     if( productBD ){
         return res.status(400).json({
             msg:`Ya existe un producto llamado ${productBD.name}`
@@ -19,9 +18,7 @@ const createProduct = async(req, res = response) => {
         }
         const newProduct = new Product(data);
         await newProduct.save();
-        res.status(200).json({
-            newProduct
-        });      
+        res.status(200).json(newProduct);      
     } catch (error) {
         console.log('No se pudo guardar en la BD');
         throw(error);

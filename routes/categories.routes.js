@@ -26,6 +26,7 @@ router.post('/',[
     validateToken,
     validateAdminRole,
     check('name','El nombre es necesario').not().isEmpty(),
+    check('section','La seccion es necesaria').not().isEmpty(),
     //validateUsersData son validaciones de express-validator validan campos en general
     validateUsersData
     ],createCategory);
@@ -34,7 +35,6 @@ router.put('/:id',[
     validateToken,
     validateAdminRole,
     check('id','El ID proporcionado no es valido en Mongo').isMongoId(),
-    check('name','El nombre es necesario para poder actualizar').not().isEmpty(),
     check('id').custom((id)=>categoryIdExist(id)),
 
     validateUsersData

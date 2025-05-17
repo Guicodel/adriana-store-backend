@@ -1,7 +1,7 @@
 const path = require('path');
 const {v4: uuid4} = require('uuid');
 
-const uploadFile = (files,validExtensions = ['jpeg','png','jpg','jfif'],folder='') =>{
+const uploadFile = (files,validExtensions = ['jpeg','png','jpg','jfif','JPEG','PNG','JPG','JFIF'],folder='') =>{
     return new Promise((resolve,reject)=>{
         const imgFile = files.imgFiles;
         const nameImgSplit = imgFile.name.split('.');
