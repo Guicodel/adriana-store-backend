@@ -2,6 +2,7 @@ const { response } = require("express");
 const User = require("../models/user");
 const bcryptjs = require('bcryptjs');
 const { generateJWT } = require("../hellpers/jwt-generator");
+const jwt = require('jsonwebtoken');
 
 
 const login = async(req,res = response)=>{
@@ -42,7 +43,46 @@ const login = async(req,res = response)=>{
     }
     
 }
+const checkLoginStatus = async(req,res = response) =>{
+    const token = req.header('Authorization-token');
+        if(!token){
+            return res.status(401).json({
+                msg: 'Token inexistente'
+            });
+        }
+        try {
+            const {uid} = jwt.verify(token, process.env.SECRETORPRIVATEKEY);
+            
+            const authUser = await(User.findById(uid));
+    
+            //validacion cuando el usuario fue borrado fisicamente
+            if(!authUser){
+                return res.status(401).json({
+                    msg:'usuario inexistente / token inexistente'
+                });
+            }
+    
+            //verificar si el authUser tiene estado:true
+            if(!authUser.state){
+                return res.status(401).json({
+                    msg:'usuario no habilitado'
+                })
+            }
+            const newtoken = await generateJWT(authUser.id);
+            res.status(200).json({
+                authUser,
+                token:newtoken});
+        } catch (error) {
+            console.log(error);
+            res.status(401).json({
+                msg: 'ERROR no se pudo completar la operacion'
+            });
+            
+        }
+
+}
 
 module.exports = {
-    login
+    login,
+    checkLoginStatus
 }

@@ -26,21 +26,43 @@ const createProduct = async(req, res = response) => {
 }
 
 const getAllProducts = async(req, res = response) => {
-    const {limit = 5, from = 0} = req.query;
+    const {limit = 15, from = 0, sectionQuery = 'ALL'} = req.query;
     const enabled = {state : true};
     try {
-        const [ total, products ] = await Promise.all([
-            Product.countDocuments(enabled),
-            Product.find(enabled)
-                .populate('userId','name')
-                .populate('categoryId','name')
-                .skip(Number(from))
-                .limit(Number(limit))
-        ]);
-        res.status(200).json({
-            total,
-            products
-        });
+        let sectionQ = sectionQuery.toUpperCase();
+        const sections = ['CLOTHES','COSTUMES','HOME-ACCESSORIES','TOYS'];
+        if(sections.includes(sectionQ))
+        {
+            const [ total, products ] = await Promise.all([
+                Product.countDocuments({state:true,section:sectionQ}),
+                Product.find({state:true,section:sectionQ})
+                    .populate('userId','name')
+                    .populate('categoryId','name')
+                    .skip(Number(from))
+                    .limit(Number(limit))
+            ]);
+            res.status(200).json({
+                total,
+                products
+            });
+        }
+        else
+        {
+            const [ total, products ] = await Promise.all([
+                Product.countDocuments(enabled),
+                Product.find(enabled)
+                    .populate('userId','name')
+                    .populate('categoryId','name')
+                    .skip(Number(from))
+                    .limit(Number(limit))
+            ]);
+            res.status(200).json({
+                total,
+                products
+            });
+
+        }
+        
     } catch (error) {
         console.log('No se pudo obtener la informacion de la BD');
         throw (error);
