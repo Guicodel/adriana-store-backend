@@ -1,5 +1,6 @@
 const { response } = require('express');
 const { Category } = require('../models/index');
+const {storeSections} = require('../data-base/utils')
 
 
 const getAllCategories = async(req, res = response)=>{
@@ -20,6 +21,30 @@ const getAllCategories = async(req, res = response)=>{
         console.log('Error al consultar en la BD');
         throw(error)
     }
+}
+const getCategoriesBySection = async(req, res= response)=>{
+    const section = req.params.section.toUpperCase();
+    if(!storeSections.includes(section)){
+        return res.status(400).json({
+            msg:'Error la sección no se encuentra registrada',
+        });
+    }
+    try {
+        //const categories = await Category.find({section:section,state:true});
+        const [categories,total] = await Promise.all([
+            Category.find({section:section,state:true}),
+            Category.countDocuments({section:section},{state:true})
+        ]);
+        res.status(200).json({
+            total,
+            categories
+        });
+        
+    } catch (error) {
+        console.log('error al consultar a la BD');
+        throw(error);
+    }
+    
 }
 const createCategory = async(req, res = response) =>{
     const name = req.body.name.toUpperCase();
@@ -105,5 +130,6 @@ module.exports = {
     updateCategory,
     getAllCategories,
     deleteCategory,
-    getCategoryById
+    getCategoryById,
+    getCategoriesBySection
 }

@@ -12,6 +12,7 @@ class Server {
         this.userRoutes = userRoutes;
         this.paths = {
             auth:       '/api/auth',
+            searching:  '/api/searching',
             categories: '/api/categories',
             users:      '/api/users',
             products:   '/api/products',
@@ -51,6 +52,7 @@ class Server {
         // igual funciona asi
         //this.app.use('/api/user',require('../routes/user.routes'));
         this.app.use(this.paths.auth,require('../routes/auth.routes'));
+        this.app.use(this.paths.searching,require('../routes/searching.routes'));
         this.app.use(this.paths.users,require('../routes/user.routes'));
         this.app.use(this.paths.categories,require('../routes/categories.routes'));
         this.app.use(this.paths.products,require('../routes/products.routes'));

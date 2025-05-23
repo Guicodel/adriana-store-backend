@@ -26,7 +26,7 @@ const createProduct = async(req, res = response) => {
 }
 
 const getAllProducts = async(req, res = response) => {
-    const {limit = 15, from = 0, sectionQuery = 'ALL'} = req.query;
+    const {limit = 50, from = 0, sectionQuery = 'ALL'} = req.query;
     const enabled = {state : true};
     try {
         let sectionQ = sectionQuery.toUpperCase();

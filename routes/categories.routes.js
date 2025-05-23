@@ -2,7 +2,7 @@ const {Router} = require('express');
 const {check} = require('express-validator');
 const { validateToken } = require('../middlewares/token-validator');
 const { validateUsersData } = require('../middlewares/users-data-validator');
-const { createCategory, updateCategory, getAllCategories, getCategoryById, deleteCategory } = require('../controllers/categories.controller');
+const { createCategory, updateCategory, getAllCategories, getCategoryById, deleteCategory, getCategoriesBySection } = require('../controllers/categories.controller');
 const { validateAdminRole } = require('../middlewares/role-validator');
 const { categoryIdExist } = require('../hellpers/db-validators');
 
@@ -12,6 +12,8 @@ const router = Router();
 
 
 router.get('/',getAllCategories);
+
+router.get('/:section',getCategoriesBySection);
 
 
 router.get('/:id',[
