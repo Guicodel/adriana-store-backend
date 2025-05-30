@@ -32,11 +32,11 @@ const validateToken = async(req = request, res = response, next)=>{
 
         req.uidt = uid;
          next();
-    } catch (error) {
-        console.log(error);
+        } catch (error) {
         res.status(401).json({
             msg: 'Token no valido'
         });
+        
         
     }
    

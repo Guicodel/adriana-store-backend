@@ -1,6 +1,6 @@
 const { response } = require("express")
 const { Product } = require('../models/index');
-
+const {storeSections } = require('../data-base/utils')
 const createProduct = async(req, res = response) => {
     const name = req.body.name.toUpperCase();
     const productBD = await Product.findOne({name});
@@ -30,8 +30,8 @@ const getAllProducts = async(req, res = response) => {
     const enabled = {state : true};
     try {
         let sectionQ = sectionQuery.toUpperCase();
-        const sections = ['CLOTHES','COSTUMES','HOME-ACCESSORIES','TOYS'];
-        if(sections.includes(sectionQ))
+        //const sections = ['CLOTHES','COSTUMES','HOME-ACCESSORIES','TOYS'];
+        if(storeSections.includes(sectionQ))
         {
             const [ total, products ] = await Promise.all([
                 Product.countDocuments({state:true,section:sectionQ}),

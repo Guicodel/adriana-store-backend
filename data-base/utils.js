@@ -1,6 +1,7 @@
 
 
-const storeSections = ['CLOTHES','COSTUMES','HOME-ACCESSORIES','TOYS','ON-DISCOUNT'];
+const storeSections = ['PRENDAS DE VESTIR','DISFRACES','ACCESORIOS PARA EL HOGAR','JUGUETES','EN OFERTA'];
+
 
 module.exports = {
     storeSections

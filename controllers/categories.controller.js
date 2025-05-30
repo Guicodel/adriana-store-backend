@@ -4,7 +4,7 @@ const {storeSections} = require('../data-base/utils')
 
 
 const getAllCategories = async(req, res = response)=>{
-    const {limit = 5, from = 0} = req.query;
+    const {limit = 50, from = 0} = req.query;
     const enabled = {state:true};
     try {
         const[total,categories] = await Promise.all([
@@ -25,6 +25,22 @@ const getAllCategories = async(req, res = response)=>{
 const getCategoriesBySection = async(req, res= response)=>{
     const section = req.params.section.toUpperCase();
     if(!storeSections.includes(section)){
+        if(section==='ALL'){
+            try {
+                const [categories,total] = await Promise.all([
+                    Category.find({state:true}),
+                    Category.countDocuments({state:true})
+                ]);
+                res.status(200).json({
+                    total,
+                    categories
+                });
+                
+            } catch (error) {
+                console.log('error al consultar a la BD');
+                throw(error);
+            }
+        }
         return res.status(400).json({
             msg:'Error la sección no se encuentra registrada',
         });
