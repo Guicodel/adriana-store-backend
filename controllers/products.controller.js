@@ -36,6 +36,7 @@ const getAllProducts = async(req, res = response) => {
             const [ total, products ] = await Promise.all([
                 Product.countDocuments({state:true,section:sectionQ}),
                 Product.find({state:true,section:sectionQ})
+                    .sort({ _id: -1 })
                     .populate('userId','name')
                     .populate('categoryId','name')
                     .skip(Number(from))
@@ -51,6 +52,7 @@ const getAllProducts = async(req, res = response) => {
             const [ total, products ] = await Promise.all([
                 Product.countDocuments(enabled),
                 Product.find(enabled)
+                     .sort({ _id: -1 })
                     .populate('userId','name')
                     .populate('categoryId','name')
                     .skip(Number(from))

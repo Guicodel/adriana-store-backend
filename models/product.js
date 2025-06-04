@@ -56,7 +56,7 @@ const ProductSchema = new Schema({
     },
     gender:{
         type: String,
-        enum: ['Varon','Mujer','Niños','Unisex']
+        enum: ['Varón','Mujer','Niños','Unisex','']
     }
 
 });
