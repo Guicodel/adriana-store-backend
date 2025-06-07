@@ -91,7 +91,6 @@ const updateProduct = async(req, res = response) => {
     try {
         if(name){
             name = req.body.name.toUpperCase();
-            console.log(name);
             const productDB = await Product.findOne({name});
             //console.log(`este el es nombre ${productDB.name}`);
                 if( productDB ){

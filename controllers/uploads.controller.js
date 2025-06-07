@@ -107,7 +107,7 @@ const getImageByImageName = async(req, res = response) =>{
             }
         }
         return res.json({
-            msj:'No Existen Imagen del Elemento'
+            msg:'No Existen Imagen del Elemento'
         })
 
     } catch (error) {
@@ -164,7 +164,9 @@ const updateImage = async( req, res = response)=>{
         modelColection.img.push(fileName);
         await modelColection.save();
         res.status(201).json({
-            modelColection
+            modelColection,
+            imgName:fileName
+            
         })
 
     } catch (error) {
